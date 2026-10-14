@@ -25,3 +25,6 @@ Thumbs.db
 key.properties
 .env
 .env.*
+
+# Local assignment files
+flutter materials/
