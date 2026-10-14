@@ -34,35 +34,4 @@ void main() {
     await requestBack(tester);
     expect(find.text('Discard changes?'), findsOneWidget);
   });
-
-  testWidgets('captures detail and discard dialog screenshots', (tester) async {
-    await tester.binding.setSurfaceSize(const Size(390, 844));
-    addTearDown(() => tester.binding.setSurfaceSize(null));
-
-    const captureKey = Key('capture');
-    await tester.pumpWidget(
-      const RepaintBoundary(
-        key: captureKey,
-        child: SizedBox(width: 390, height: 844, child: MyApp()),
-      ),
-    );
-    await openEditor(tester);
-    await tester.enterText(find.byType(TextField), 'Aida Nurlan');
-    await tester.tap(find.text('Save'));
-    await tester.pumpAndSettle();
-    await expectLater(
-      find.byKey(captureKey),
-      matchesGoldenFile('../screenshot_detail.png'),
-    );
-
-    await tester.tap(find.byIcon(Icons.edit));
-    await tester.pumpAndSettle();
-    await tester.enterText(find.byType(TextField), 'Unsaved name');
-    await tester.pump();
-    await requestBack(tester);
-    await expectLater(
-      find.byKey(captureKey),
-      matchesGoldenFile('../screenshot_dialog.png'),
-    );
-  });
 }

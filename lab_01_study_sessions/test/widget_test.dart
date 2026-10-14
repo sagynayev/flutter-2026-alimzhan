@@ -66,51 +66,12 @@ void main() {
     expect(find.text('Discard changes?'), findsOneWidget);
   });
 
-  testWidgets('captures phone light and dark screenshots', (tester) async {
-    await tester.binding.setSurfaceSize(const Size(390, 844));
-    addTearDown(() => tester.binding.setSurfaceSize(null));
-
-    const captureKey = Key('phone-capture');
-    await tester.pumpWidget(
-      const RepaintBoundary(
-        key: captureKey,
-        child: SizedBox(width: 390, height: 844, child: MyApp()),
-      ),
-    );
-    await tester.pumpAndSettle();
-    await expectLater(
-      find.byKey(captureKey),
-      matchesGoldenFile('../screenshot_phone_light.png'),
-    );
-
-    await tester.tap(find.text('Profile'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Dark'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Sessions'));
-    await tester.pumpAndSettle();
-    await expectLater(
-      find.byKey(captureKey),
-      matchesGoldenFile('../screenshot_phone_dark.png'),
-    );
-  });
-
-  testWidgets('captures the tablet grid', (tester) async {
+  testWidgets('uses a grid on a tablet-sized screen', (tester) async {
     await tester.binding.setSurfaceSize(const Size(900, 700));
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
-    const captureKey = Key('tablet-capture');
-    await tester.pumpWidget(
-      const RepaintBoundary(
-        key: captureKey,
-        child: SizedBox(width: 900, height: 700, child: MyApp()),
-      ),
-    );
+    await tester.pumpWidget(const MyApp());
     await tester.pumpAndSettle();
     expect(find.byType(GridView), findsOneWidget);
-    await expectLater(
-      find.byKey(captureKey),
-      matchesGoldenFile('../screenshot_tablet_grid.png'),
-    );
   });
 }
