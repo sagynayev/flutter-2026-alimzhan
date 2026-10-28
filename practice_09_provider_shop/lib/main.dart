@@ -1,26 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import 'book.dart';
 import 'books_screen.dart';
 import 'cart_screen.dart';
+import 'models/cart.dart';
 
-void main() => runApp(const Shell());
-
-class Shell extends StatefulWidget {
-  const Shell({super.key});
-
-  @override
-  State<Shell> createState() => _ShellState();
+void main() {
+  runApp(ChangeNotifierProvider(create: (_) => Cart(), child: const Shell()));
 }
 
-class _ShellState extends State<Shell> {
-  final List<Book> _cart = [];
-
-  int get _total => _cart.fold(0, (sum, book) => sum + book.price);
-
-  void _add(Book book) => setState(() => _cart.add(book));
-
-  void _remove(Book book) => setState(() => _cart.remove(book));
+class Shell extends StatelessWidget {
+  const Shell({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +21,8 @@ class _ShellState extends State<Shell> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
       ),
       routes: {
-        '/': (_) => BooksScreen(cart: _cart, total: _total, onAdd: _add),
-        '/cart': (_) => CartScreen(items: _cart, onRemove: _remove),
+        '/': (_) => const BooksScreen(),
+        '/cart': (_) => const CartScreen(),
       },
     );
   }

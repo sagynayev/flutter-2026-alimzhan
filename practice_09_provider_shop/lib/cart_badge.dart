@@ -1,27 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class CartBadge extends StatelessWidget {
-  const CartBadge({super.key, required this.count, required this.total});
+import 'models/cart.dart';
 
-  final int count;
-  final int total;
+class CartTotal extends StatelessWidget {
+  const CartTotal({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text('$total ₸'),
-        const SizedBox(width: 6),
-        Badge(
-          label: Text('$count'),
-          child: IconButton(
-            tooltip: 'Cart',
-            onPressed: () => Navigator.of(context).pushNamed('/cart'),
-            icon: const Icon(Icons.shopping_cart_outlined),
-          ),
+    final total = context.select<Cart, int>((cart) => cart.total);
+    return Center(child: Text('$total ₸'));
+  }
+}
+
+class CartBadge extends StatelessWidget {
+  const CartBadge({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    debugPrint('badge build');
+    final count = context.select<Cart, int>((cart) => cart.count);
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: Badge(
+        label: Text('$count'),
+        child: IconButton(
+          tooltip: 'Cart',
+          onPressed: () => Navigator.of(context).pushNamed('/cart'),
+          icon: const Icon(Icons.shopping_cart_outlined),
         ),
-        const SizedBox(width: 8),
-      ],
+      ),
     );
   }
 }
